@@ -13,6 +13,11 @@ requires that file to exist in the same directory. It should be called
 
 No data ever leaves your device with this.
 
+Fine
+* If notes do not have any tags they will go into a folder called "untagged"
+* If notes have multiple tags they will go into a folder called "multiTag" and
+  a line will added to the end of note content listing all the tags
+
 ## Requirements
 
 This was tested with `deno@1.22.0`, though it's possible older versions might
@@ -23,11 +28,11 @@ There are no other dependencies. **Deno**!
 ## Usage (no install)
 
 ```sh
-# For exporting notes as *.txt files into an "exports" directory
+# For exporting notes as *.md files into an "exports" directory
 $ deno run --allow-read --allow-write https://deno.land/x/standardnotes_folder_export@1.0.1/main.ts
 
-# For exporting notes as *.md files into an "exported" directory
-$ deno run --allow-read --allow-write https://deno.land/x/standardnotes_folder_export@1.0.1/main.ts --file-extension=md --output-directory=exported
+# For exporting notes as *.txt files into an "exported" directory
+$ deno run --allow-read --allow-write https://deno.land/x/standardnotes_folder_export@1.0.1/main.ts --file-extension=txt --output-directory=exported
 ```
 
 ## Usage (install)
@@ -35,7 +40,7 @@ $ deno run --allow-read --allow-write https://deno.land/x/standardnotes_folder_e
 ```sh
 $ deno install --allow-net https://deno.land/x/standardnotes_folder_export@1.0.1/main.ts
 
-# For exporting notes as *.txt files into an "exports" directory
+# For exporting notes as *.md files into an "exports" directory
 $ standardnotes_folder_export
 
 # For exporting notes as *.md files into an "exported" directory
@@ -45,7 +50,7 @@ $ standardnotes_folder_export --file-extension=md --output-directory=exported
 ## Development
 
 ```sh
-# For exporting notes as *.txt files into an "exports" directory
+# For exporting notes as *.md files into an "exports" directory
 $ make start
 
 # For exporting notes as *.md files into an "exported" directory

@@ -4,7 +4,7 @@ import { createNotes, createTagsFolders, ExportData, parseExportData } from './u
 const exportFileName = 'Standard Notes Backup and Import File.txt';
 
 async function main(args: string[]) {
-  const { ['file-extension']: fileExtension = 'txt', ['output-directory']: outputDirectory = 'exports' } = parse(args);
+  const { ['file-extension']: fileExtension = 'md', ['output-directory']: outputDirectory = 'exports' } = parse(args);
 
   const exportDataContent = await Deno.readTextFile(exportFileName);
 

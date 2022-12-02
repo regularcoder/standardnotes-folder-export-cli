@@ -118,7 +118,8 @@ function parseNameForFilesystem(name: string) {
   return name.replaceAll('/', '-').replaceAll('\\', '-');
 }
 
-const defaultTag = 'Untagged';
+const defaultTag = 'untagged';
+const multiTag = 'multiTag';
 
 export async function createTagsFolders(
   outputDirectory: string,
@@ -128,6 +129,7 @@ export async function createTagsFolders(
     await Deno.mkdir(`${outputDirectory}/${parseNameForFilesystem(tag)}`, { recursive: true });
   }));
 
+  await Deno.mkdir(`${outputDirectory}/${multiTag}`, { recursive: true });
   await Deno.mkdir(`${outputDirectory}/${defaultTag}`, { recursive: true });
 }
 
@@ -138,11 +140,22 @@ export async function createNotes(
   fileExtension: string,
 ) {
   await Promise.all(notes.map(async (note) => {
-    for (const tag of [...(tagsPerNote.get(note.uuid) || [defaultTag])]) {
-      await Deno.writeTextFile(
-        `${outputDirectory}/${parseNameForFilesystem(tag)}/${parseNameForFilesystem(note.title)}.${fileExtension}`,
-        note.content,
-      );
+    let folderName = defaultTag;
+    const tagsForNote = tagsPerNote.get(note.uuid) || [];
+    let content = note.content;
+
+    if (tagsForNote?.length > 1) {
+      folderName = multiTag;
+      const tags = tagsForNote.map((t) => '#' + t).join(' ');
+
+      content += '\n\n' + tags;
+    } else if (tagsForNote?.length == 1) {
+      folderName = tagsForNote[0];
     }
+
+    await Deno.writeTextFile(
+      `${outputDirectory}/${parseNameForFilesystem(folderName)}/${parseNameForFilesystem(note.title)}.${fileExtension}`,
+      content,
+    );
   }));
 }
